@@ -1,0 +1,10 @@
+name: covidcampus
+title:
+username:
+account: ziqiangc
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2841954
+bundleId: 3647056
+url: https://ziqiangc.shinyapps.io/covidcampus/
+when: 1600534820.55471
