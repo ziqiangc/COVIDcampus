@@ -44,39 +44,52 @@ shinyUI(fluidPage(
           tags$div(
             class="form-group",
             tags$label(class = "col-sm-4 control-label", `for` = "Period1", br(), "Period 1"),
-            column(width = 4, numericInput(inputId = "pos1", label = "Positive", value = 280)),
-            column(width = 4, numericInput(inputId = "test1", label = "Tested", value = 800))
+            column(width = 4, numericInput(inputId = "pos1", label = "Positive", value = 0)),
+            column(width = 4, numericInput(inputId = "test1", label = "Tested", value = 300))
           ),
           
           tags$div(
             class="form-group",
             tags$label(class = "col-sm-4 control-label", `for` = "Period2", "Period 2"),
-            column(width = 4, numericInput(inputId = "pos2", label = NULL, value = 340)),
-            column(width = 4, numericInput(inputId = "test2", label = NULL, value = 800))
+            column(width = 4, numericInput(inputId = "pos2", label = NULL, value = 46)),
+            column(width = 4, numericInput(inputId = "test2", label = NULL, value = 300))
           ),
           
           tags$div(
             class="form-group",
             tags$label(class = "col-sm-4 control-label", `for` = "Period3", "Period 3"),
-            column(width = 4, numericInput(inputId = "pos3", label = NULL, value = 430)),
-            column(width = 4, numericInput(inputId = "test3", label = NULL, value = 800))
+            column(width = 4, numericInput(inputId = "pos3", label = NULL, value = 58)),
+            column(width = 4, numericInput(inputId = "test3", label = NULL, value = 300))
           ),
           
           tags$div(
             class="form-group",
             tags$label(class = "col-sm-4 control-label", `for` = "Period4", "Period 4"),
-            column(width = 4, numericInput(inputId = "pos4", label = NULL, value = 480)),
-            column(width = 4, numericInput(inputId = "test4", label = NULL, value = 800))
+            column(width = 4, numericInput(inputId = "pos4", label = NULL, value = 64)),
+            column(width = 4, numericInput(inputId = "test4", label = NULL, value = 300))
           ),
           
           
           tags$div(
             class="form-group",
             tags$label(class = "col-sm-4 control-label", `for` = "Period5", "Period 5"),
-            column(width = 4, numericInput(inputId = "pos5", label = NULL, value = 550)),
-            column(width = 4, numericInput(inputId = "test5", label = NULL, value = 800))
-          )
+            column(width = 4, numericInput(inputId = "pos5", label = NULL, value = 64)),
+            column(width = 4, numericInput(inputId = "test5", label = NULL, value = 300))
+          ),
           
+          tags$div(
+            class="form-group",
+            tags$label(class = "col-sm-4 control-label", `for` = "Period5", "Period 5"),
+            column(width = 4, numericInput(inputId = "pos6", label = NULL, value = 67)),
+            column(width = 4, numericInput(inputId = "test6", label = NULL, value = 300))
+          ),
+          
+          tags$div(
+            class="form-group",
+            tags$label(class = "col-sm-4 control-label", `for` = "Period5", "Period 5"),
+            column(width = 4, numericInput(inputId = "pos7", label = NULL, value = 70)),
+            column(width = 4, numericInput(inputId = "test7", label = NULL, value = 300))
+          )
         )
         
       )

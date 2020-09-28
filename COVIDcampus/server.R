@@ -17,6 +17,9 @@ shinyServer(function(input, output){
   time <- c(7,21,35,49,63,77,91,105,119,133)
   preload_dat <- data.frame(time, y)
   
+  preload_dat1 <- data.frame(time=c(1:7),
+                    positive=c(0, 46, 58, 64, 64, 67, 70))
+  
   # intermediate function setup
   
   set.seed(4)
@@ -163,9 +166,9 @@ shinyServer(function(input, output){
     if(is.null(input$choose_source)) {
       # dat <- input_dat
       # dat <- as.data.frame(read_excel("Sample data for Zack.xlsx"))
-      period <- length(c(input$pos1, input$pos2, input$pos3, input$pos4, input$pos5))
-      dat <- data.frame(time=c(7,7+14*c(1:c(period-1))),
-                        y=c(input$pos1, input$pos2, input$pos3, input$pos4, input$pos5))
+      period <- length(c(input$pos1, input$pos2, input$pos3, input$pos4, input$pos5, input$pos6, input$pos7))
+      dat <- data.frame(time=c(1:period),
+                        positive=c(input$pos1, input$pos2, input$pos3, input$pos4, input$pos5,input$pos6, input$pos7))
       
     } else {
       dat <- as.data.frame(read_excel(input$choose_source$datapath))
