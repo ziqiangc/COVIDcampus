@@ -48,49 +48,65 @@ shinyServer(function(input, output){
 
   ## function set up
   
-  QuickPlot1 <- function(dat){
+  QuickPlot1 <- function(dat, cutoff=100) {
+    
+    # Must have at least 3 datapoints at different times
+    if (length(unique(dat$positive)) < 3) stop("too few data points to fit curve")
     
     # fit model
-    #fit <- nlsfit(dat, model=10, start=c(600,4,0.05))#
-    fit <- fit.gompertz(data = dat$y, time = dat$time)
-    # predict curve
-    newtime <- seq(from =7, to = 287, by = 14)
-    # pred <- predict(fit, newdata= data.frame(t = newtime), se.fit = TRUE)
+    mod = glm(formula = positive ~ time, family = "poisson", data = dat)
     
-    # parameter extraction
-    #param <- fit$Parameters[1:3,1]
-    param <- coef(fit)
-    param.upr <- confint2(fit)[,2]
-    param.lwr <- confint2(fit)[,1]
+    # predict the curve
+    grid <- seq(0, max(10, dat$time*2), length.out=100)
+    preds <- predict(mod, newdata=data.frame(time=grid), type="link", se.fit=TRUE)
+    
     # confidence band
-    upr <- gompertz(time = newtime, a = param.upr[1], mu = param.upr[2],
-                    lambda = param.upr[3])$y
-    lwr <- gompertz(time = newtime, a = param.lwr[1], mu = param.lwr[2],
-                    lambda = param.lwr[3])$y
-    fitted <- gompertz(time = newtime, a = param[1], mu = param[2],
-                       lambda = param[3])$y
+    # se <- 1.96 * preds$se.fit
+    # upr <- unlist(mod$family$linkinv(preds$fit + se))
+    # lwr <- unlist(mod$family$linkinv(preds$fit - se))
+    # fit <- unlist(mod$family$linkinv(preds$fit))
     
-    # find the value at 95% of 8
-    #time5000<- param[3]-((param[2]*exp(1))/(log(log(param[1]/8)))-1)/param[1]
-    time.set <- (-1/param[3])*log((-1/param[2])*log(450/param[1]))
+    param <- coef(mod)
+    param.lwr <- confint(mod)[,1]
+    param.upr <- confint(mod)[,2]
     
-    time.upr <- (-1/param.upr[3])*log((-1/param.upr[2])*log(450/param.upr[1]))
     
-    time.lwr <- (-1/param.lwr[3])*log((-1/param.lwr[2])*log(450/param.lwr[1]))
+    inverse.predict <- function(y, param) {
+      x = (log(y)-param[1]) / param[2]
+      return(x)
+    }
     
-    with(dat, plot(time, y,  xlim=c(0, 287), ylim=c(280, 750), ylab="Number of positive cases", xlab="Time"))
-    title(main=paste("Gompertz Model, Time Threshold =", round(time.set, 3)))
-    lines(newtime, fitted)
-    lines(newtime, lwr, lty = 2)
-    lines(newtime, upr, lty =2)
-    abline(h=450, lty=2, col="red")
+    predict.fun <- function(x, param) {
+      y = exp(param[1] + param[2]*x)
+    }
+    
+    fit = predict.fun(grid, param)
+    upr = predict.fun(grid, param.lwr)
+    lwr = predict.fun(grid, param.upr)
+    
+    time.set <- (mod$family$linkfun(cutoff)-param[1]) / param[2] # 95% LOD Estimate
+    time.lwr <- (mod$family$linkfun(cutoff)-param.lwr[1]) / param.lwr[2]
+    time.upr <- (mod$family$linkfun(cutoff)-param.upr[1]) / param.upr[2]
+    
+    
+    ## Plot
+    with(dat, plot(time, positive,ylab="Count of positives", xlab="Time period", pch=19, 
+                   xlim = c(1,max(10, dat$time*2, time.upr,time.lwr)), ylim=c(0,max(c(upr,lwr)))))
+    title(main=paste("Poisson Model, Time Threshold =", round(time.set, 3)))
+    
+    lines(grid, fit)
+    lines(grid, lwr, lty=2)
+    lines(grid, upr, lty=2)
+    abline(h=cutoff, lty=2, col="red")
+    
     abline(v=time.set, lty=2, col="red")
     
     abline(v=time.upr, lty=3, col="royalblue")
     abline(v=time.lwr, lty=3, col="royalblue")
     
-    axis(2, 450, labels = "450", col.axis="red", cex.axis=0.8)
-    axis(1, time.set, labels = as.character(round(time.set,3)), col.axis="red", cex.axis=0.8)
+    
+    axis(2, cutoff, labels = cutoff, col.axis="red", cex.axis=0.8)
+    axis(1, time.set, labels = as.character(round(time.set,3)), col.axis="red", cex.axis=0.8, outer =F)
   }
   
   
