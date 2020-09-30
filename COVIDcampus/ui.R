@@ -79,14 +79,14 @@ shinyUI(fluidPage(
           
           tags$div(
             class="form-group",
-            tags$label(class = "col-sm-4 control-label", `for` = "Period5", "Period 5"),
+            tags$label(class = "col-sm-4 control-label", `for` = "Period6", "Period 6"),
             column(width = 4, numericInput(inputId = "pos6", label = NULL, value = 67)),
             column(width = 4, numericInput(inputId = "test6", label = NULL, value = 300))
           ),
           
           tags$div(
             class="form-group",
-            tags$label(class = "col-sm-4 control-label", `for` = "Period5", "Period 5"),
+            tags$label(class = "col-sm-4 control-label", `for` = "Period7", "Period 7"),
             column(width = 4, numericInput(inputId = "pos7", label = NULL, value = 70)),
             column(width = 4, numericInput(inputId = "test7", label = NULL, value = 300))
           )
@@ -103,14 +103,14 @@ shinyUI(fluidPage(
                       h2("Number of cases"), plotOutput("plot1", height = "720px")
                       
                       
-             ),
-             
-             tabPanel("Percent Curve",
-                      
-                      h2("Percent cases"), plotOutput("plot2", height = "720px")
-                      
-                      
              )
+             
+             # tabPanel("Percent Curve",
+             #          
+             #          h2("Percent cases"), plotOutput("plot2", height = "720px")
+             #          
+             #          
+             # )
              
            )
            
